@@ -23,7 +23,7 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"message":"welcome to DevStation Backend !"}
+    return {"message":"welcome to project Backend !"}
 
 @app.on_event("startup")
 async def startup_db_client():
