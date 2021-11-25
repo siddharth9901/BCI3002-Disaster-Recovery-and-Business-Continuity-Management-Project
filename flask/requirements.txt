@@ -2,3 +2,6 @@ pycryptodome
 Flask
 pymongo[srv]
 Flask-PyMongo
+flask_cors
+bcrypt
+Flask-Bcrypt

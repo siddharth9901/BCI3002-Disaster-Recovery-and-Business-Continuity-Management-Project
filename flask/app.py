@@ -1,30 +1,11 @@
-# from flask import Flask, request, send_file, jsonify
-# from flask_cors import CORS
-
-# app = Flask(__name__)
-# CORS(app)
-
-# @app.route('/get-watermark', methods=['POST'])
-# def get_watermark():  # Returns watermark image to be embeded.
-#     global watermark_flag
-#     watermark = watermark_generator()
-#     if caption != "" and 'd' in RSA_Keys.keys():
-#         sig = keys.sign_caption(
-#             int(RSA_Keys['d']), int(RSA_Keys['n']), caption)
-#         print(sig)
-#         watermark.generator(str(sig))
-#         watermark_flag = True
-#         # new_flag = False
-#         return send_file("watermark.jpg", mimetype='image/jpg')
-#     else:
-#         return ""
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_pymongo import PyMongo
-import bcrypt
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 CORS(app)
+bcrypt = Bcrypt(app)
 app.config['SECRET_KEY'] = 'testing'
 
 app.config['MONGO_dbname'] = 'users'
@@ -42,14 +23,39 @@ def signup():
             if request.form['password']!=request.form['confirmpassword']:
                 print("password and confirm password do not match")
                 res={"auth":"fail"}
-                return(jsonify(res))
-            hashed = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt(14))
-            users.insert({'email': request.form['email'], 'password': hashed, 'first': request.form['first'],'last':request.form['last'],'company':request.form['company']})
+                return jsonify(res)
+            #hashed = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt(14))
+            users.insert_one({'email': request.form['email'], 'password': bcrypt.generate_password_hash(request.form['password']), 'first': request.form['first'],'last':request.form['last'],'company':request.form['company']})
             res={"auth":"success"}
-            return(jsonify(res))
+            return jsonify(res)
         else:
             res={"auth":"fail"}
-            return(jsonify(res))
+            return jsonify(res)
+
+@app.route("/login", methods=['POST'])
+def login():
+    if request.method == 'POST':
+        users = mongo.db.users
+        signin_user = users.find_one({'email': request.form['email']})
+        if signin_user:
+            print(signin_user['password'])
+            if bcrypt.check_password_hash(signin_user['password'],request.form['password']):
+                print("success")
+                res={"auth":"success"}
+                return jsonify(res)
+            else:
+                print("fail")
+                res = {"auth": "fail"}
+                return jsonify(res)
+        else:
+            print("fail")
+            res={"auth":"fail"}
+            return jsonify(res)
+
+
+@app.route("/", methods=['POST', 'GET'])
+def index():
+    return "Welcome from Flask"
 
 # @app.route('/signin', methods=['GET', 'POST'])
 # def signin():
