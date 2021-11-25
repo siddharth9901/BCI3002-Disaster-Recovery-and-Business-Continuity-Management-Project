@@ -134,3 +134,7 @@ dmypy.json
 
 .idea
 .vscode
+*.pgml
+*.json
+_pgbackup
+_pginfo
