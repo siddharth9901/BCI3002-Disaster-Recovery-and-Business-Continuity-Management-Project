@@ -10,6 +10,26 @@
     <link href="css/style.css" rel="stylesheet" />
     <link href="bootstrap_theme/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="blocks.css" />
+    <script>
+        function signup() {
+            console.log("working")
+            var xhr = new XMLHttpRequest()
+            xhr.open("POST", "http://127.0.0.1:5000/signup");
+            xhr.onload = function (event) {
+                // confirm("The server says: " + event.target.response);
+                var json = JSON.parse(event.target.response)
+                confirm("Please Save your secret key: " + json.secret)
+                console.log(json)
+                if (json.auth == "success") {
+                    localStorage.setItem("token", json.token)
+                    window.location.href = ("login.html");
+                }
+            };
+            var formData = new FormData(document.getElementById("signup"));
+            xhr.send(formData);
+            //document.getElementById('frame').style = { "display": "flex" }
+        }
+    </script>
 </head>
 
 <body>
@@ -41,19 +61,19 @@
         <section class="bg-light">
             <div class="container pb-5 pt-5">
                 <a href="#" class="d-inline-block h2 mb-4 text-decoration-none text-uppercase"> Sign Up</a>
-                <form action="http://127.0.0.1:5000/signup" method="post" >
+                <form onSubmit="signup()" target="hiddenFrame" id="signup">
                     <div class="row">
                         <div class="mb-3 col-md-6">
                             <label class="form-label" for="inputFirstName">First Name</label>
                             <input type="text"
                                 class="bg-light border-start-0 border-end-0 border-top-0 form-control ps-0 pe-0 rounded-0"
-                                name="first" id="inputFirstName" placeholder="Enter first name..." />
+                                name="first" id="inputFirstName" placeholder="Enter first name..." required />
                         </div>
                         <div class="mb-3 col-md-6">
                             <label class="form-label" for="inputLastName">Last Name</label>
                             <input type="text"
                                 class="bg-light border-start-0 border-end-0 border-top-0 form-control ps-0 pe-0 rounded-0"
-                                name="last" id="inputLastName" placeholder="Enter last name..." />
+                                name="last" id="inputLastName" placeholder="Enter last name..." required />
                         </div>
                     </div>
                     <div class="row">
@@ -61,13 +81,13 @@
                             <label class="form-label" for="inputEmail">Email</label>
                             <input type="email"
                                 class="bg-light border-start-0 border-end-0 border-top-0 form-control ps-0 pe-0 rounded-0"
-                                name="email" id="inputEmail" placeholder="Enter email..." />
+                                name="email" id="inputEmail" placeholder="Enter email..." required />
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="inputCompany">Company</label>
                             <input type="text"
                                 class="bg-light border-start-0 border-end-0 border-top-0 form-control ps-0 pe-0 rounded-0"
-                                name="company" id="inputCompany" placeholder="Enter company name..." />
+                                name="company" id="inputCompany" placeholder="Enter company name..." required />
                         </div>
                     </div>
                     <div class="row">
@@ -75,13 +95,14 @@
                             <label class="form-label" for="inputpassword">Password</label>
                             <input type="password"
                                 class="bg-light border-start-0 border-end-0 border-top-0 form-control ps-0 pe-0 rounded-0"
-                                name="password" id="inputpassword" placeholder="Enter password..." />
+                                name="password" id="inputpassword" placeholder="Enter password..." required />
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="confirmpassword">Confirm Password</label>
                             <input type="password"
                                 class="bg-light border-start-0 border-end-0 border-top-0 form-control ps-0 pe-0 rounded-0"
-                                name="confirmpassword"  id="confirmpassword" placeholder="Confirm password..." />
+                                name="confirmpassword" id="confirmpassword" placeholder="Confirm password..."
+                                required />
                         </div>
                     </div>
                     <div class="text-end">
@@ -96,6 +117,7 @@
                         </button>
                     </div>
                 </form>
+                <iframe src="#" frameborder="0" style="display: none;" name="hiddenFrame"></iframe>
             </div>
         </section>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" fill="currentColor" version="1.1"

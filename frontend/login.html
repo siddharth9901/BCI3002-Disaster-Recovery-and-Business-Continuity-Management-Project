@@ -10,6 +10,40 @@
     <link href="css/style.css" rel="stylesheet" />
     <link href="bootstrap_theme/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="blocks.css" />
+    <script>
+        function login() {
+            console.log("working")
+            var xhr = new XMLHttpRequest()
+            xhr.open("POST", "http://127.0.0.1:5000/login");
+            xhr.onload = function (event) {
+                alert("The server says: " + event.target.response);
+                var json = JSON.parse(event.target.response)
+                console.log(json)
+                if (json.auth == "success") {
+                    localStorage.setItem("token", json.token)
+                    window.location.href = ("logedin.html");
+                } else {
+                    alert("")
+                }
+            };
+            var formData = new FormData(document.getElementById("login"));
+            xhr.send(formData);
+            //document.getElementById('frame').style = { "display": "flex" }
+        }
+            // function setToken() {
+            //     console.log("set token called")
+            //     setTimeout(console.log("Frame", document.getElementById("frame").innerHTML), 200)
+
+            //     if (document.getElementById("frame").innerHTML.startsWith('{')) {
+            //         var json = JSON.parse(document.getElementById("frame").innerHTML)
+            //         console.log(json)
+            //         if (json.auth == "success") {
+            //             localStorage.setItem("token", json.token)
+            //             window.location.href = ("logedin.html");
+            //         }
+            //     }
+        //}
+    </script>
 </head>
 
 <body>
@@ -44,7 +78,8 @@
                     <div class="bg-white p-4 p-lg-5">
                         <h2 class="mb-1 text-dark">Login</h2>
                         <p class="mb-4">Please Enter your credentials to login.</p>
-                        <form action="http://127.0.0.1:5000/login" method="post">
+                        <form target="hiddenFrame" onSubmit="login()" id="login">
+                            <!-- action="http://127.0.0.1:5000/login" method="post" -->
                             <div class="mb-3">
                                 <div class="input-group"><span class="bg-light input-group-text"
                                         id="addon-wrapping1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -57,7 +92,7 @@
                                             </g>
                                         </svg></span>
                                     <input type="email" class="form-control" placeholder="Email" name="email"
-                                        aria-label="User Email" aria-describedby="addon-wrapping1" />
+                                        aria-label="User Email" aria-describedby="addon-wrapping1" required />
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -72,29 +107,44 @@
                                             </g>
                                         </svg></span>
                                     <input type="password" class="form-control" placeholder="Password" name="password"
-                                        aria-label="Password" aria-describedby="addon-wrapping2" />
+                                        aria-label="Password" aria-describedby="addon-wrapping2" required />
 
                                 </div>
                             </div>
-                            <input type="password" class="form-control" placeholder="OTP" aria-label="OTP" name="otp"
-                                aria-describedby="addon-wrapping2" />
-                            <div class="mb-3 form-check">
+                            <div class="input-group"><span class="bg-light input-group-text" id="addon-wrapping2"><svg
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        width="1em" height="1em">
+                                        <g>
+                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                            <path
+                                                d="M10.758 11.828l7.849-7.849 1.414 1.414-1.414 1.415 2.474 2.474-1.414 1.415-2.475-2.475-1.414 1.414 2.121 2.121-1.414 1.415-2.121-2.122-2.192 2.192a5.002 5.002 0 0 1-7.708 6.294 5 5 0 0 1 6.294-7.708zm-.637 6.293A3 3 0 1 0 5.88 13.88a3 3 0 0 0 4.242 4.242z">
+                                            </path>
+                                        </g>
+                                    </svg></span>
+                                <input type="password" class="form-control" placeholder="otp" name="otp"
+                                    aria-label="Password" aria-describedby="addon-wrapping2" />
+
+                            </div>
+                    </div>
+                    <!-- <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="exampleCheck1" />
                                 <label class="form-check-label" for="exampleCheck1">Remember me</label>
-                            </div>
-                            <button type="submit" class="btn d-block w-100 btn-primary fw-bold pb-2 ps-3 pe-3 pt-2">Sign
-                                In</button>
-                        </form>
-                    </div>
+                            </div> -->
+                    <button type="submit" class="btn d-block w-100 btn-primary fw-bold pb-2 ps-3 pe-3 pt-2">Sign
+                        In</button>
+                    </form>
+                    <iframe src="#" frameborder="0" style="display: none;" name="hiddenFrame" id="frame">
+                    </iframe>
                 </div>
             </div>
-        </section>
-        <script></script>
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" fill="currentColor" version="1.1"
-            xmlns="http://www.w3.org/2000/svg" width="100%" class="bg-primary d-block text-warning" height="50">
-            <path d="M 0 100 V 40 L 100 100" />
-            <path d="M 100 100 V 0 L 0 100" opacity="0.5" />
-        </svg>
+    </div>
+    </section>
+    <script></script>
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none" fill="currentColor" version="1.1"
+        xmlns="http://www.w3.org/2000/svg" width="100%" class="bg-primary d-block text-warning" height="50">
+        <path d="M 0 100 V 40 L 100 100" />
+        <path d="M 100 100 V 0 L 0 100" opacity="0.5" />
+    </svg>
     </div>
     <footer class="bg-light pt-5 text-secondary">
         <div class="container">

@@ -5,3 +5,5 @@ Flask-PyMongo
 flask_cors
 bcrypt
 Flask-Bcrypt
+PyJWT==1.7.1
+hashlib
