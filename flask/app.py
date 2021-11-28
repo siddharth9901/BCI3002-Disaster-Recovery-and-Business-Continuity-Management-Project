@@ -25,7 +25,7 @@ def signup():
         if not signup_user:
             if request.form['password']!=request.form['confirmpassword']:
                 print("password and confirm password do not match")
-                res={"auth":"fail"}
+                res={"auth":"fail","error":"Password and Confirm Password do not match"}
                 return jsonify(res)
             secret=''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase+
                              string.digits, k=128))
@@ -33,7 +33,7 @@ def signup():
             res={"auth":"success","secret":secret}
             return jsonify(res)
         else:
-            res={"auth":"fail"}
+            res={"auth":"fail","error":"You Already Have an Account"}
             return jsonify(res)
 
 @app.route("/login", methods=['POST'])
@@ -84,16 +84,16 @@ def login():
                     return jsonify(res)
                 else:
                     print("fail3")
-                    res = {"auth": "fail"}
+                    res = {"auth": "fail","error":"Incorrect OTP!!!"}
                     return jsonify(res)
                 # return '''<script> console.log('script')</script>'''
             else:
                 print("fail1")
-                res = {"auth": "fail"}
+                res = {"auth": "fail","error":"Incorrect Password!!!"}
                 return jsonify(res)
         else:
             print("fail2")
-            res={"auth":"fail"}
+            res={"auth":"fail","error":"User Does Not Exist!!!"}
             return jsonify(res)
 
 
