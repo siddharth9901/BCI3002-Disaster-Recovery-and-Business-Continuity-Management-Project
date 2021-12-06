@@ -17,10 +17,10 @@ def generateOTP():
         if (len(row) == 8):
             matrix.append(row)
             row = []
-    otp = int(time.time()) // 100
-    row = (otp // 3) % 8
-    column = (otp // 5) % 8
-    otp = matrix[row][column] + str(otp)
+    currenttime = int(time.time()) // 100
+    row = (currenttime // 3) % 8
+    column = (currenttime // 5) % 8
+    otp = matrix[row][column] + str(currenttime)
     otp = int(hashlib.sha512(otp.strip().encode('utf-8')).hexdigest(), 16) % 1000000
     print(" OTP : ", otp)
     global OTP
